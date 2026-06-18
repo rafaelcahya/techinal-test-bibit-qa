@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.automation'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    cucumberVersion    = '7.18.0'
+    seleniumVersion    = '4.27.0'
+    appiumVersion      = '9.3.0'
+    restAssuredVersion = '5.5.0'
+    junitVersion       = '5.11.4'
+}
+
+dependencies {
+    // Cucumber
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-picocontainer:${cucumberVersion}"
+
+    // JUnit 5
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.platform:junit-platform-suite:1.11.4"
+    testRuntimeOnly    "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly    "org.junit.vintage:junit-vintage-engine:${junitVersion}"
+
+    // Selenium (Web)
+    testImplementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    // WebDriverManager - auto-manages ChromeDriver
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+    // Appium (Android)
+    testImplementation "io.appium:java-client:${appiumVersion}"
+
+    // RestAssured (API)
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+    testImplementation "io.rest-assured:json-path:${restAssuredVersion}"
+    testImplementation "io.rest-assured:xml-path:${restAssuredVersion}"
+    testImplementation "io.rest-assured:json-schema-validator:${restAssuredVersion}"
+
+    // Logging
+    testImplementation 'org.slf4j:slf4j-api:2.0.16'
+    testRuntimeOnly    'ch.qos.logback:logback-classic:1.5.12'
+
+    // Assertions
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+    }
+}
