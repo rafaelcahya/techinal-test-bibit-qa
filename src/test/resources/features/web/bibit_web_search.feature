@@ -5,11 +5,11 @@ Feature: Bibit Website - Search Product
     Given I open the browser and navigate to "explore"
 
   Scenario: Search with valid keyword shows matching results
-    When I click element
+    When I click "explore button" element
     Then I enter "Sucorinvest" in the field
     And all results should contain "Sucorinvest"
 
   Scenario: Search with invalid keyword shows no results
-    When I click element
+    When I click "explore button" element
     Then I enter "Sucorinvest123qweasd" in the field
     And no results should be displayed
